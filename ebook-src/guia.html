@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Guia de Vinhos do Centro-Oeste · Somm's Wine Bar</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=block" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 0; }
+  :root { --navy: #23264a; --night: #131428; --wine: #6b1a2e; --gold: #b8925a; --gold2: #d6b88a; --paper: #f7f2ea; --line: #e3d7c4; --muted: #6f6878; --ink: #1b1c30; --cream: #f3ebdd; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { font: 400 10.5pt/1.6 'Source Serif 4', Georgia, serif; color: #2b2a36; background: #888; }
+  .page { width: 210mm; height: 297mm; position: relative; overflow: hidden; background: var(--paper); page-break-after: always; break-after: page; padding: 22mm 22mm 20mm; }
+  .page:last-child { page-break-after: auto; break-after: auto; }
+  h1, h2, h3 { font-family: 'Cormorant Garamond', serif; color: var(--ink); font-weight: 500; margin: 0; }
+  h2 { font-size: 34pt; line-height: 1; margin: 0 0 6mm; padding-right: 32mm; }
+  h2 em, h1 em { color: var(--wine); font-weight: 400; }
+  h3 { font-size: 17pt; font-weight: 600; margin: 6mm 0 2mm; }
+  p { margin: 0 0 3.2mm; }
+  .kicker { font: 500 7.5pt/1 'Jost', sans-serif; letter-spacing: .26em; text-transform: uppercase; color: var(--wine); margin-bottom: 4mm; display: flex; align-items: center; gap: 3mm; }
+  .kicker::before { content: ''; width: 8mm; height: .3mm; background: currentColor; }
+  .num { position: absolute; right: 22mm; top: 16mm; font: italic 500 60pt/1 'Cormorant Garamond'; color: rgba(184, 146, 90, .35); }
+  .foot { position: absolute; left: 22mm; right: 22mm; bottom: 11mm; display: flex; justify-content: space-between; font: 400 7pt 'Jost'; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); border-top: .2mm solid var(--line); padding-top: 3mm; }
+  .lead { font: italic 400 15pt/1.35 'Cormorant Garamond'; color: var(--muted); margin-bottom: 6mm; }
+  .cols { columns: 2; column-gap: 9mm; }
+  .cols p { break-inside: avoid-column; }
+  .drop::first-letter { float: left; font: 500 46pt/.8 'Cormorant Garamond'; color: var(--wine); margin: 1.5mm 2.5mm 0 0; }
+  .photo { width: 100%; height: 72mm; object-fit: cover; border-radius: 1.5mm; margin: 4mm 0 5mm; }
+  .box { background: #fffdf9; border: .25mm solid var(--line); border-radius: 1.5mm; padding: 6mm 7mm; margin: 5mm 0; position: relative; }
+  .box::before { content: ''; position: absolute; inset: 2mm; border: .2mm solid rgba(184, 146, 90, .4); pointer-events: none; }
+  .box h4 { font: 600 15pt/1.1 'Cormorant Garamond'; margin: 0 0 3mm; color: var(--ink); }
+  .box dl { margin: 0; display: grid; grid-template-columns: 28mm 1fr; row-gap: 1.6mm; font: 400 9pt/1.45 'Jost'; }
+  .box dt { color: var(--wine); letter-spacing: .14em; text-transform: uppercase; font-size: 7pt; padding-top: .6mm; }
+  .box dd { margin: 0; }
+  .tip { background: #efe6d8; border-radius: 1.5mm; padding: 5mm 6mm; margin: 5mm 0; font-size: 10pt; }
+  .tip b { display: block; font: 500 7pt 'Jost'; letter-spacing: .24em; text-transform: uppercase; color: var(--wine); margin-bottom: 1.5mm; }
+  .src { font: 400 7pt/1.4 'Jost'; color: var(--muted); margin-top: 4mm; }
+  .winery { border-top: .25mm solid var(--line); padding-top: 4mm; margin-top: 5mm; }
+  .winery .where { font: 500 7.5pt 'Jost'; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); }
+  .tags { display: flex; flex-wrap: wrap; gap: 1.6mm; margin-top: 2mm; }
+  .tags span { font: 400 7.5pt 'Jost'; border: .2mm solid var(--line); border-radius: 10mm; padding: .8mm 2.6mm; background: #fffdf9; }
+
+  /* capa */
+  .cover { background: var(--navy); color: var(--cream); padding: 0; }
+  .cover .bg { position: absolute; inset: 0; background: url('https://images.unsplash.com/photo-1504279577054-acfeccf8fc52?auto=format&fit=crop&w=1100&q=60') center / cover; opacity: .35; }
+  .cover .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(35, 38, 74, .75), rgba(19, 20, 40, .96) 70%); }
+  .cover .frame { position: absolute; inset: 12mm; border: .3mm solid rgba(214, 184, 138, .55); }
+  .cover .inner { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 30mm; }
+  .cover .mark { width: 22mm; margin-bottom: 12mm; }
+  .cover .pre { font: italic 400 22pt/1 'Cormorant Garamond'; color: var(--gold2); }
+  .cover h1 { font-size: 64pt; line-height: .95; color: var(--cream); margin: 3mm 0 7mm; }
+  .cover .states { font: 500 9pt 'Jost'; letter-spacing: .5em; color: var(--gold2); }
+  .cover .sub { font: italic 400 14pt/1.35 'Cormorant Garamond'; color: rgba(243, 235, 221, .8); margin-top: 14mm; max-width: 120mm; }
+  .cover .brand { position: absolute; bottom: 24mm; left: 0; right: 0; text-align: center; }
+  .cover .brand img { width: 62mm; }
+  .cover .brand p { font: 400 7pt 'Jost'; letter-spacing: .3em; text-transform: uppercase; color: rgba(243, 235, 221, .55); margin-top: 3mm; }
+
+  .toc { list-style: none; padding: 0; margin: 8mm 0 0; }
+  .toc li { display: grid; grid-template-columns: 14mm 1fr auto; gap: 3mm; align-items: baseline; padding: 3.2mm 0; border-top: .2mm solid var(--line); }
+  .toc .n { font: italic 500 20pt/1 'Cormorant Garamond'; color: var(--gold); }
+  .toc .t { font: 600 14pt/1.1 'Cormorant Garamond'; color: var(--ink); }
+  .toc .p { font: 400 8pt 'Jost'; color: var(--muted); }
+  .sign { display: flex; gap: 10mm; margin-top: 6mm; font: italic 400 13pt 'Cormorant Garamond'; color: var(--wine); }
+  .sign small { display: block; font: 400 7pt 'Jost'; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); font-style: normal; }
+
+  /* calendário da dupla poda */
+  .cal { display: grid; grid-template-columns: repeat(12, 1fr); gap: 1mm; margin: 6mm 0 2mm; font: 400 7pt 'Jost'; text-align: center; }
+  .cal div { padding: 2mm 0 1.5mm; border-radius: 1mm; background: #efe6d8; color: var(--muted); }
+  .cal .rain { background: #dfe5ee; color: #3b4a66; }
+  .cal .grow { background: #e4ecd9; color: #3e5a28; }
+  .cal .harv { background: var(--wine); color: #fff; }
+  .legend { display: flex; gap: 5mm; font: 400 7.5pt 'Jost'; color: var(--muted); margin-bottom: 5mm; }
+  .legend i { display: inline-block; width: 3mm; height: 3mm; border-radius: .6mm; margin-right: 1.4mm; vertical-align: -.4mm; }
+  .steps { counter-reset: s; list-style: none; padding: 0; margin: 4mm 0; display: grid; gap: 3.5mm; }
+  .steps li { counter-increment: s; display: grid; grid-template-columns: 11mm 1fr; gap: 3mm; align-items: start; }
+  .steps li::before { content: counter(s); width: 9mm; height: 9mm; border-radius: 50%; background: var(--navy); color: var(--cream); display: grid; place-items: center; font: 500 13pt 'Cormorant Garamond'; }
+  .steps b { font-weight: 600; color: var(--ink); }
+
+  .grapes { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; margin-top: 4mm; }
+  .grape { background: #fffdf9; border: .25mm solid var(--line); border-radius: 1.5mm; padding: 4.5mm 5mm; }
+  .grape h4 { font: 600 15pt/1 'Cormorant Garamond'; margin: 0 0 1.5mm; display: flex; align-items: center; gap: 2mm; }
+  .grape h4 i { width: 3mm; height: 3mm; border-radius: 50%; }
+  .grape p { font: 400 8.5pt/1.5 'Jost'; margin: 0; color: #444; }
+
+  .note { border: .3mm solid var(--line); border-radius: 1.5mm; padding: 5mm 6mm; background: #fffdf9; }
+  .note .line { border-bottom: .2mm dashed var(--line); height: 8mm; display: flex; align-items: flex-end; font: 400 7pt 'Jost'; letter-spacing: .18em; text-transform: uppercase; color: var(--wine); padding-bottom: 1mm; }
+  .back { background: var(--night); color: var(--cream); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+  .back h2 { color: var(--cream); font-size: 40pt; padding-right: 0; }
+  .back h2 em { color: var(--gold2); }
+  .back p { color: rgba(243, 235, 221, .75); max-width: 120mm; }
+  .back .btn { display: inline-block; margin-top: 6mm; padding: 4mm 9mm; border-radius: 20mm; background: var(--gold); color: var(--night); font: 500 9pt 'Jost'; letter-spacing: .16em; text-transform: uppercase; text-decoration: none; }
+  .back .info { margin-top: 14mm; font: 400 8.5pt/1.8 'Jost'; color: rgba(243, 235, 221, .65); }
+  .back img { width: 70mm; margin-bottom: 14mm; }
+  .back .legal { position: absolute; bottom: 14mm; font: 400 6.5pt 'Jost'; letter-spacing: .14em; text-transform: uppercase; color: rgba(243, 235, 221, .4); }
+</style>
+</head>
+<body>
+
+<!-- 1. CAPA -->
+<section class="page cover">
+  <div class="bg"></div><div class="shade"></div><div class="frame"></div>
+  <div class="inner">
+    <img class="mark" src="../public/assets/img/mark-cream.png" alt="">
+    <span class="pre">Guia de Vinhos do</span>
+    <h1>Centro-Oeste</h1>
+    <span class="states">DF · GO · MT · MS</span>
+    <p class="sub">Como o Cerrado aprendeu a fazer vinho fino, quem está produzindo e o que vale colocar na sua taça.</p>
+  </div>
+  <div class="brand"><img src="../public/assets/img/logo-cream.png" alt="Somm's Wine Bar"><p>Uma publicação do Diário de Adega</p></div>
+</section>
+
+<!-- 2. APRESENTAÇÃO -->
+<section class="page">
+  <p class="kicker">Antes do primeiro gole</p>
+  <h2>Um brinde ao <em>vinho daqui</em></h2>
+  <p class="lead">Até pouco tempo atrás, falar em vinho fino do Centro-Oeste soava como provocação. Hoje é assunto sério nas melhores cartas do país.</p>
+  <p class="drop">Este guia nasceu das conversas no balcão do Somm's, na 412 Sul. Cada vez que servimos um Syrah do Cerrado, alguém pergunta: "isso é daqui mesmo?". É. E tem uma história bonita por trás, feita de ciência, teimosia e muito sol de inverno.</p>
+  <p>Reunimos nestas páginas o essencial para você entender essa história, conhecer alguns dos produtores que estão desenhando o mapa do vinho na região e, principalmente, provar com mais curiosidade. No fim, deixamos uma ficha em branco para as suas anotações.</p>
+  <div class="sign"><span>Beatriz Campos<small>Sommelière</small></span><span>Frederico Castro<small>Sommelier</small></span></div>
+  <ol class="toc">
+    <li><span class="n">01</span><span class="t">O Cerrado entra no mapa</span><span class="p">p. 3</span></li>
+    <li><span class="n">02</span><span class="t">Dupla poda em uma página</span><span class="p">p. 4</span></li>
+    <li><span class="n">03</span><span class="t">Goiás: altitude a 100 km de Brasília</span><span class="p">p. 5</span></li>
+    <li><span class="n">04</span><span class="t">Mato Grosso e Mato Grosso do Sul</span><span class="p">p. 6</span></li>
+    <li><span class="n">05</span><span class="t">Uvas e estilos</span><span class="p">p. 7</span></li>
+    <li><span class="n">06</span><span class="t">Roteiro e ficha de degustação</span><span class="p">p. 8</span></li>
+  </ol>
+  <div class="foot"><span>Guia de Vinhos do Centro-Oeste</span><span>2</span></div>
+</section>
+
+<!-- 3. CAP 1 -->
+<section class="page">
+  <span class="num">01</span>
+  <p class="kicker">Capítulo um</p>
+  <h2>O Cerrado <em>entra no mapa</em></h2>
+  <p class="lead">O problema nunca foi o sol nem o solo. Era o calendário.</p>
+  <img class="photo" src="https://images.unsplash.com/photo-1537640538966-79f369143f8f?auto=format&fit=crop&w=1000&q=62" alt="">
+  <div class="cols">
+    <p class="drop">A videira de vinho fino evoluiu em climas temperados, com verões secos e invernos frios. No Planalto Central, o ciclo natural da planta colocava a maturação das uvas justamente no verão, a estação das chuvas. Água em excesso na reta final dilui o açúcar, favorece doenças e derruba a qualidade.</p>
+    <p>Por isso, durante décadas, a uva do Centro-Oeste foi quase sempre de mesa. A virada veio quando pesquisadores e produtores passaram a manejar a planta para que ela amadurecesse no período seco, entre o outono e o inverno.</p>
+    <p>Nesse período, o Cerrado oferece exatamente o que a uva precisa: dias de sol intenso, céu limpo, quase nenhuma chuva e uma boa diferença de temperatura entre o dia e a noite. O açúcar se concentra sem que a acidez desapareça.</p>
+    <p>O resultado são tintos de fruta madura e frescor surpreendente, e brancos aromáticos que vêm ganhando prêmios e espaço nas cartas. A região ainda é jovem no vinho, e isso é parte da graça: cada safra traz um produtor novo para conhecer.</p>
+  </div>
+  <div class="tip"><b>Para provar no Somm's</b>Peça ao sommelier um flight "Syrah em três sotaques": um do Cerrado, um do Novo Mundo e um do Rhône. É a forma mais rápida de entender o que o Planalto tem de particular.</div>
+  <div class="foot"><span>Guia de Vinhos do Centro-Oeste</span><span>3</span></div>
+</section>
+
+<!-- 4. CAP 2 -->
+<section class="page">
+  <span class="num">02</span>
+  <p class="kicker">Capítulo dois</p>
+  <h2>Dupla poda <em>em uma página</em></h2>
+  <p class="lead">Também chamada de poda invertida: uma ideia simples que mudou o vinho brasileiro fora do Sul.</p>
+  <p>A técnica foi desenvolvida no Sudeste e se espalhou para Goiás, Distrito Federal e Mato Grosso. Em vez de deixar a videira seguir o próprio ritmo, o produtor faz duas podas por ano para "empurrar" a colheita para a estação seca.</p>
+  <ol class="steps">
+    <li><span><b>Poda de formação, no fim do inverno.</b> A planta brota e cresce durante o verão chuvoso, mas os cachos que surgem são descartados. Ela só acumula energia.</span></li>
+    <li><span><b>Poda de produção, no fim do verão.</b> Agora sim a videira é induzida a produzir. Os cachos se formam com as chuvas terminando.</span></li>
+    <li><span><b>Colheita no inverno seco.</b> Entre junho e agosto, com sol, noites frias e quase nenhuma chuva, a uva amadurece devagar e concentrada.</span></li>
+  </ol>
+  <div class="cal">
+    <div class="rain">JAN</div><div class="rain">FEV</div><div class="rain">MAR</div><div class="grow">ABR</div><div class="grow">MAI</div><div class="harv">JUN</div><div class="harv">JUL</div><div class="harv">AGO</div><div>SET</div><div class="rain">OUT</div><div class="rain">NOV</div><div class="rain">DEZ</div>
+  </div>
+  <div class="legend"><span><i style="background:#dfe5ee"></i>chuvas</span><span><i style="background:#e4ecd9"></i>maturação</span><span><i style="background:#6b1a2e"></i>colheita de inverno</span><span><i style="background:#efe6d8"></i>repouso e poda</span></div>
+  <div class="box">
+    <h4>Por que funciona no Cerrado</h4>
+    <dl>
+      <dt>Sol</dt><dd>Dias longos e luminosos no inverno, com céu aberto.</dd>
+      <dt>Seca</dt><dd>Sem chuva na maturação: uvas sãs e concentradas.</dd>
+      <dt>Amplitude</dt><dd>Noites frescas preservam a acidez e os aromas.</dd>
+      <dt>Controle</dt><dd>A irrigação permite ajustar a água na medida certa.</dd>
+    </dl>
+  </div>
+  <div class="foot"><span>Guia de Vinhos do Centro-Oeste</span><span>4</span></div>
+</section>
+
+<!-- 5. CAP 3 GOIÁS -->
+<section class="page">
+  <span class="num">03</span>
+  <p class="kicker">Capítulo três</p>
+  <h2>Goiás: altitude <em>a 100 km de Brasília</em></h2>
+  <p class="lead">Na Serra dos Pireneus, o Cerrado de altitude virou terroir.</p>
+  <img class="photo" src="https://images.unsplash.com/photo-1504279577054-acfeccf8fc52?auto=format&fit=crop&w=1000&q=62" alt="">
+  <div class="winery">
+    <span class="where">Cocalzinho de Goiás · GO · cerca de 104 km de Brasília</span>
+    <h3>Pireneus Vinhos e Vinhedos</h3>
+    <p>Projeto do médico e sommelier Marcelo de Souza, que plantou os primeiros vinhedos em 2005 a partir de mudas italianas. A vinícola usa a poda invertida para colher no inverno e driblar o período das chuvas.</p>
+    <div class="tags"><span>Syrah</span><span>Tempranillo</span><span>Sangiovese</span><span>Barbera</span></div>
+  </div>
+  <div class="box">
+    <h4>Rótulos para procurar</h4>
+    <dl>
+      <dt>Intrépido</dt><dd>Syrah premiado como grande campeão no Wines of Brazil 2023.</dd>
+      <dt>Bandeiras</dt><dd>Barbera, para quem gosta de tintos de acidez viva.</dd>
+      <dt>Linha Terroir</dt><dd>Varietais de Syrah e de Tempranillo.</dd>
+      <dt>Terroir Brut</dt><dd>Apresentado como o primeiro espumante do Centro-Oeste.</dd>
+    </dl>
+  </div>
+  <div class="tip"><b>Dica de visita</b>Os vinhos da Pireneus são vendidos principalmente por revendas. Antes de pegar a estrada, confirme com a vinícola se há visitação na data desejada.</div>
+  <div class="foot"><span>Guia de Vinhos do Centro-Oeste</span><span>5</span></div>
+</section>
+
+<!-- 6. CAP 4 MT / MS -->
+<section class="page">
+  <span class="num">04</span>
+  <p class="kicker">Capítulo quatro</p>
+  <h2>Mato Grosso e <em>Mato Grosso do Sul</em></h2>
+  <p class="lead">Da Chapada dos Guimarães à porta do Pantanal, o vinho chega a paisagens improváveis.</p>
+  <div class="winery">
+    <span class="where">Chapada dos Guimarães · MT · 62 km de Cuiabá</span>
+    <h3>Locanda do Vale</h3>
+    <p>Fundada por Luiz Oliveira e Raquel Molina, com cerca de quatro hectares de vinhas americanas e viníferas. Repete na Chapada o manejo da dupla poda. Entre os rótulos, um Syrah sem madeira, um Sauvignon Blanc cofermentado com Viognier e um Syrah com 12 meses em carvalho francês. Os vinhos são vendidos na própria vinícola, que recebe visitas agendadas.</p>
+    <div class="tags"><span>Cabernet Sauvignon</span><span>Syrah</span><span>Pinot Noir</span><span>Marselan</span><span>Sauvignon Blanc</span><span>Viognier</span></div>
+  </div>
+  <div class="winery">
+    <span class="where">Aquidauana · MS · caminho do Pantanal</span>
+    <h3>Terroir Pantanal</h3>
+    <p>Projeto de enoturismo com vinhedos de Sauvignon Blanc, Cabernet Sauvignon, Syrah e Marselan, além de uvas de mesa. O espumante da casa, Florada dos Ipês, é elaborado em parceria com a Don Guerino, da Serra Gaúcha. Trilhas e mirantes do Morro do Chapéu completam a visita.</p>
+    <div class="tags"><span>Sauvignon Blanc</span><span>Cabernet Sauvignon</span><span>Syrah</span><span>Marselan</span></div>
+  </div>
+  <div class="winery">
+    <span class="where">Distrito Federal e Entorno</span>
+    <h3>Novos vinhedos no Planalto</h3>
+    <p>Ao redor de Brasília, novos projetos de vinho fino surgem a cada safra, apostando na mesma combinação de altitude, inverno seco e dupla poda. Acompanhe o Diário de Adega: vamos apresentar esses produtores nas próximas degustações do Somm's.</p>
+  </div>
+  <p class="src">Informações de produtores com base em reportagem de A Gazeta (jul. 2023). Preços, horários e rótulos podem ter mudado: confirme diretamente com cada vinícola.</p>
+  <div class="foot"><span>Guia de Vinhos do Centro-Oeste</span><span>6</span></div>
+</section>
+
+<!-- 7. CAP 5 UVAS -->
+<section class="page">
+  <span class="num">05</span>
+  <p class="kicker">Capítulo cinco</p>
+  <h2>Uvas <em>e estilos</em></h2>
+  <p class="lead">As castas que melhor responderam ao sol de inverno do Centro-Oeste.</p>
+  <div class="grapes">
+    <div class="grape"><h4><i style="background:#4a0f1f"></i>Syrah</h4><p>A estrela da região. Fruta escura madura, pimenta-do-reino e violeta, com taninos macios e final fresco. Vai bem com carnes grelhadas e cordeiro.</p></div>
+    <div class="grape"><h4><i style="background:#d8c27a"></i>Sauvignon Blanc</h4><p>Branco aromático, com notas cítricas e herbáceas. Acidez viva, ótimo para o calor de Brasília e para pratos com ervas.</p></div>
+    <div class="grape"><h4><i style="background:#6e1a2e"></i>Tempranillo</h4><p>A uva da Rioja se adaptou bem à altitude goiana. Cereja, especiarias e couro leve quando passa por madeira.</p></div>
+    <div class="grape"><h4><i style="background:#8a2a40"></i>Barbera</h4><p>Tinta italiana de acidez alta e taninos baixos. Combina com massas ao sugo, pizza e embutidos.</p></div>
+    <div class="grape"><h4><i style="background:#5a1730"></i>Marselan</h4><p>Cruzamento de Cabernet Sauvignon com Grenache. Cor intensa, fruta vermelha e corpo médio.</p></div>
+    <div class="grape"><h4><i style="background:#e0c98a"></i>Viognier</h4><p>Branca perfumada, com damasco e flores. Aparece em cortes com Sauvignon Blanc e em brancos de mais corpo.</p></div>
+  </div>
+  <div class="box">
+    <h4>Ficha típica · Syrah do Cerrado</h4>
+    <dl>
+      <dt>Cor</dt><dd>Rubi profundo, com reflexos violáceos</dd>
+      <dt>Nariz</dt><dd>Amora, ameixa, pimenta-do-reino, violeta</dd>
+      <dt>Boca</dt><dd>Encorpado, taninos macios, final fresco</dd>
+      <dt>Serviço</dt><dd>16 a 18 °C, em taça ampla</dd>
+      <dt>Harmoniza</dt><dd>Carnes grelhadas, cordeiro, queijos curados</dd>
+    </dl>
+  </div>
+  <div class="foot"><span>Guia de Vinhos do Centro-Oeste</span><span>7</span></div>
+</section>
+
+<!-- 8. CAP 6 ROTEIRO + FICHA -->
+<section class="page">
+  <span class="num">06</span>
+  <p class="kicker">Capítulo seis</p>
+  <h2>Roteiro e <em>ficha de degustação</em></h2>
+  <h3>Três passeios saindo de Brasília</h3>
+  <div class="box">
+    <dl>
+      <dt>Bate-volta</dt><dd>Cocalzinho de Goiás e a Serra dos Pireneus, a pouco mais de 100 km. Combine com Pirenópolis.</dd>
+      <dt>Fim de semana</dt><dd>Chapada dos Guimarães (MT): voe até Cuiabá e suba a Chapada para visitar vinhedo e cachoeiras.</dd>
+      <dt>Viagem longa</dt><dd>Aquidauana (MS) a caminho do Pantanal: enoturismo, trilhas e natureza.</dd>
+    </dl>
+  </div>
+  <h3>Sua ficha de degustação</h3>
+  <div class="note">
+    <div class="line">Vinho / produtor / safra</div>
+    <div class="line">Uva e região</div>
+    <div class="line">Cor</div>
+    <div class="line">Nariz</div>
+    <div class="line">Boca</div>
+    <div class="line">Com o que eu tomaria de novo</div>
+    <div class="line">Nota (de 1 a 5 taças)</div>
+  </div>
+  <div class="tip"><b>Leve esta ficha ao Somm's</b>Mostre suas anotações ao sommelier: ele monta um flight a partir do que você mais gostou.</div>
+  <div class="foot"><span>Guia de Vinhos do Centro-Oeste</span><span>8</span></div>
+</section>
+
+<!-- 9. CONTRACAPA -->
+<section class="page back">
+  <img src="../public/assets/img/logo-cream.png" alt="Somm's Wine Bar">
+  <p class="kicker" style="color:#d6b88a">Agora é na taça</p>
+  <h2>Vinhos selecionados, <em>taças servidas no Coravin</em></h2>
+  <p>Mais de 400 rótulos, flights de degustação, degustações guiadas aos sábados e gastronomia pensada para harmonizar.</p>
+  <a class="btn" href="https://wa.me/message/RMXR7NCDVYLUL1">Reserve pelo WhatsApp</a>
+  <div class="info">CLS 412, Bloco A, Loja 27 · Asa Sul · Brasília/DF<br>Terça a sexta, 15h às 0h · Sábado, 11h30 às 0h<br>@sommswinebar</div>
+  <p class="legal">Aprecie com moderação · Venda proibida para menores de 18 anos</p>
+</section>
+
+</body>
+</html>
