@@ -17,6 +17,16 @@ npm run ebook      # gera de novo o PDF do e-book a partir de ebook-src/guia.htm
 - Painel: `/admin`. Usuário e senha de teste ficam em `config.js` (`admin`); **troque em produção** pelas variáveis `ADMIN_USER` e `ADMIN_PASS`.
 - Também há `/feed.xml`, `/sitemap.xml` e `/robots.txt`.
 
+## Versão estática (GitHub Pages)
+
+A cada push na `main`, o GitHub Actions (`.github/workflows/pages.yml`) gera e publica uma cópia estática em **https://guleite.github.io/somms-wine-bar/**. Para gerar localmente: `npm run static` (sai em `_site/`).
+
+Serve para apresentar o site. Diferenças em relação à versão com servidor:
+- o conteúdo é o de exemplo (posts criados no painel não aparecem lá);
+- filtros e busca do blog rodam no navegador;
+- os formulários mostram o PDF e o cupom, mas **não salvam o contato**;
+- não tem o painel `/admin`.
+
 ## Variáveis de ambiente
 
 | Variável | Para quê | Padrão |

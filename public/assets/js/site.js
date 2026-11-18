@@ -10,6 +10,10 @@
     set(k, v) { try { localStorage.setItem('somms:' + k, JSON.stringify(v)); } catch { /* modo privado */ } },
   };
   const DAY = 864e5;
+  // Na versão estática (GitHub Pages) o site mora numa subpasta e não tem servidor: veja scripts/build-static.js
+  const CFG = window.SOMMS || {};
+  const BASE = CFG.base || '';
+  const BLOG = BASE + (CFG.static ? '/blog/' : '/blog');
   const track = (name, data = {}) => {
     // Gancho para GA4 / Meta Pixel: window.dataLayer recebe todos os eventos.
     (window.dataLayer = window.dataLayer || []).push({ event: 'somms_' + name, ...data });
@@ -256,18 +260,22 @@
     const url = new URL(href, location.origin);
     results.classList.add('is-loading');
     try {
-      const params = new URLSearchParams(url.search);
-      params.set('parcial', '1');
-      const htmlText = await (await fetch('/blog?' + params)).text();
-      results.innerHTML = htmlText;
+      if (CFG.static) {
+        results.innerHTML = await staticResults(url.searchParams);
+      } else {
+        const params = new URLSearchParams(url.search);
+        params.set('parcial', '1');
+        results.innerHTML = await (await fetch('/blog?' + params)).text();
+      }
       if (push) history.pushState({}, '', url.pathname + url.search);
       syncFilterUI(url.searchParams);
       $$('.card', results).forEach((el) => { el.classList.add('reveal'); io.observe(el); });
       const top = results.getBoundingClientRect().top + scrollY - 170;
       if (scrollY > top) scrollTo({ top, behavior: reduce ? 'auto' : 'smooth' });
       track('filtro', Object.fromEntries(url.searchParams));
-    } catch {
-      location.href = href;
+    } catch (err) {
+      if (CFG.static) console.error(err); // sem servidor, recarregar não ajudaria
+      else location.href = href;
     } finally {
       results.classList.remove('is-loading');
     }
@@ -299,7 +307,7 @@
     const cur = new URLSearchParams(location.search);
     for (const k of ['categoria', 'estilo', 'regiao', 'tag', 'q', 'ordem']) if (!form.elements[k] && cur.get(k)) sp.set(k, cur.get(k));
     if (form.classList.contains('head-search')) sp.delete('tag');
-    return '/blog' + (sp.toString() ? '?' + sp : '');
+    return BLOG + (sp.toString() ? '?' + sp : '');
   }
   if (results) {
     document.addEventListener('click', (ev) => {
@@ -313,7 +321,62 @@
       form.addEventListener('change', (ev) => { if (ev.target.matches('input[type=radio], select')) loadResults(formHref(form)); });
     });
     addEventListener('popstate', () => loadResults(location.href, false));
+    // versão estática: a página do blog sempre vem com todos os textos; aplica os filtros da URL
+    if (CFG.static && /[?&](categoria|estilo|regiao|tag|q|ordem|pagina)=/.test(location.search)) queueMicrotask(() => loadResults(location.href, false));
     $('[data-filters-toggle]')?.addEventListener('click', () => $('[data-filters]').classList.toggle('is-open'));
+  }
+
+  // ---------------------------------------------------- filtros sem servidor (versão estática)
+  let INDEX = null;
+  const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+  const pad2 = (n) => String(n).padStart(2, '0');
+  async function staticResults(sp) {
+    INDEX = INDEX || await (await fetch(BLOG + 'index.json')).json();
+    const g = (k) => (sp.get(k) || '').trim();
+    const f = { categoria: g('categoria'), estilo: g('estilo'), regiao: g('regiao'), tag: g('tag').toLowerCase(), q: g('q').slice(0, 80) };
+    const ordem = ['populares', 'antigos', 'leitura'].includes(g('ordem')) ? g('ordem') : '';
+    const q = f.q.toLowerCase();
+    const list = INDEX.posts.filter((p) => (!f.categoria || p.cat === f.categoria) && (!f.estilo || p.style === f.estilo)
+      && (!f.regiao || p.region === f.regiao) && (!f.tag || p.tags.includes(f.tag)) && (!q || p.text.includes(q)));
+    const newer = (a, b) => (b.date > a.date ? 1 : b.date < a.date ? -1 : 0);
+    list.sort(ordem === 'populares' ? (a, b) => b.views - a.views || newer(a, b)
+      : ordem === 'antigos' ? (a, b) => -newer(a, b)
+      : ordem === 'leitura' ? (a, b) => a.rt - b.rt || newer(a, b)
+      : newer);
+    const total = list.length;
+    const pages = Math.max(1, Math.ceil(total / 9));
+    const page = Math.min(Math.max(1, Number(g('pagina')) || 1), pages);
+    const items = list.slice((page - 1) * 9, page * 9);
+    const base = { ...f, ordem };
+    const href = (o) => {
+      const p = new URLSearchParams();
+      Object.entries({ ...base, ...o }).forEach(([k, v]) => { if (v && !(k === 'pagina' && v === 1)) p.set(k, v); });
+      return BLOG + (p.toString() ? '?' + p : '');
+    };
+    const active = [];
+    if (f.categoria && INDEX.cats[f.categoria]) active.push(['categoria', INDEX.cats[f.categoria]]);
+    if (f.estilo) active.push(['estilo', INDEX.styles[f.estilo] || f.estilo]);
+    if (f.regiao) active.push(['regiao', f.regiao]);
+    if (f.tag) active.push(['tag', '#' + f.tag]);
+    if (f.q) active.push(['q', '“' + f.q + '”']);
+    return `
+  <div class="results-bar">
+    <p><strong>${pad2(total)}</strong> ${total === 1 ? 'texto encontrado' : 'textos encontrados'}</p>
+    <div class="active-filters">
+      ${active.map(([k, label]) => `<a href="${href({ [k]: '' })}" class="chip is-on" data-filter-link>${esc(label)} ${INDEX.icons.close}</a>`).join('')}
+      ${active.length > 1 ? `<a href="${BLOG}" class="btn-text" data-filter-link>Limpar tudo</a>` : ''}
+    </div>
+  </div>
+  ${items.length ? `<div class="grid-3 results-grid">${items.map((p, i) => (i === 0 && page === 1 && !active.length ? p.wide : p.card)).join('')}</div>` : `
+    <div class="empty">
+      ${INDEX.icons.glass}
+      <h3 class="display">Nenhum texto com esses filtros <em>ainda</em></h3>
+      <p>Tente outra combinação ou peça uma sugestão ao nosso sommelier.</p>
+      <a class="btn btn-ghost" href="${BLOG}" data-filter-link>Ver todos os textos</a>
+    </div>`}
+  ${pages > 1 ? `<nav class="pagination" aria-label="Paginação">
+    ${Array.from({ length: pages }, (_, i) => i + 1).map((n) => `<a href="${href({ pagina: n })}" class="${n === page ? 'is-current' : ''}" data-filter-link>${pad2(n)}</a>`).join('')}
+  </nav>` : ''}`;
   }
 
   // ---------------------------------------------------- formulários de lead
@@ -334,9 +397,16 @@
     msg.textContent = 'Enviando…';
     msg.className = 'form-msg';
     try {
-      const r = await fetch('/api/leads', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
-      const out = await r.json();
-      if (!r.ok) throw new Error(out.error || 'Não foi possível enviar.');
+      let out;
+      if (CFG.static) {
+        // sem servidor: demonstração (o contato não é salvo). Com servidor, os leads vão para o banco e o painel.
+        await new Promise((r) => setTimeout(r, 500));
+        out = { ok: true, download: BASE + CFG.ebook, coupon: CFG.coupon };
+      } else {
+        const r = await fetch('/api/leads', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+        out = await r.json();
+        if (!r.ok) throw new Error(out.error || 'Não foi possível enviar.');
+      }
       store.set('lead-' + data.type, Date.now());
       track('lead', { tipo: data.type, origem: form.dataset.source });
       onLeadSuccess(form, data, out);

@@ -11,7 +11,7 @@ const { config, WINE_STYLES } = await import('./config.js');
 const db = await import('./lib/db.js');
 const { parseMarkdown, escapeHtml, slugify } = await import('./lib/markdown.js');
 const pages = await import('./views/pages.js');
-const { img } = await import('./views/helpers.js');
+const { rss, sitemap, robots } = await import('./lib/feeds.js');
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
 const PUBLIC = join(ROOT, 'public');
@@ -237,22 +237,6 @@ async function handleApi(req, res, url) {
   return json(res, 404, { error: 'Rota não encontrada.' });
 }
 
-// ---------------------------------------------------------------- feeds
-function rss() {
-  const { items } = db.queryPosts({ perPage: 20 });
-  const x = (s) => escapeHtml(s);
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0"><channel>
-<title>Diário de Adega · Somm's Wine Bar</title><link>${config.siteUrl}/blog</link><description>${x(config.site.tagline)}</description><language>pt-BR</language>
-${items.map((p) => `<item><title>${x(p.title)}</title><link>${config.siteUrl}/blog/${p.slug}</link><guid>${config.siteUrl}/blog/${p.slug}</guid><pubDate>${new Date(p.published_at.replace(' ', 'T') + ':00-03:00').toUTCString()}</pubDate><description>${x(p.excerpt)}</description><enclosure url="${x(img(p.cover, 900))}" type="image/jpeg" length="0"/></item>`).join('\n')}
-</channel></rss>`;
-}
-function sitemap() {
-  const { items } = db.queryPosts({ perPage: 1000 });
-  const urls = ['/', '/blog', '/guia-centro-oeste', ...items.map((p) => `/blog/${p.slug}`)];
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls.map((u) => `<url><loc>${config.siteUrl}${u}</loc></url>`).join('')}</urlset>`;
-}
-
 // ---------------------------------------------------------------- roteador
 const server = createServer(async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
@@ -287,9 +271,7 @@ const server = createServer(async (req, res) => {
     if (path === '/guia-centro-oeste') return send(res, 200, pages.ebookPage());
     if (path === '/feed.xml') return send(res, 200, rss(), 'application/rss+xml; charset=utf-8');
     if (path === '/sitemap.xml') return send(res, 200, sitemap(), MIME['.xml']);
-    if (path === '/robots.txt') {
-      return send(res, 200, config.pitchMode ? 'User-agent: *\nDisallow: /\n' : `User-agent: *\nDisallow: /admin\nDisallow: /api\nSitemap: ${config.siteUrl}/sitemap.xml\n`, MIME['.txt']);
-    }
+    if (path === '/robots.txt') return send(res, 200, robots(), MIME['.txt']);
     if (path === '/admin') return (await serveStatic(req, res, '/admin/index.html')) || send(res, 404, 'Painel não encontrado');
 
     if (await serveStatic(req, res, url.pathname)) return;
